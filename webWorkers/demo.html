@@ -1,0 +1,48 @@
+<!-- Worker 线程无法读取本地文件，即不能打开本机的文件系统（file://），它所加载的脚本，必须来自网络。 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <body>
+
+    <p>计数： <output id="result"></output></p>
+    <button onclick="startWorker()">开始工作</button>
+    <button onclick="stopWorker()">停止工作</button>
+
+    <p><strong>注意：</strong> Internet Explorer 9 及更早 IE 版本浏览器不支持 Web Workers.</p>
+
+    <script>
+      var w;
+
+      function startWorker() {
+
+        if (typeof (Worker) !== "undefined") {
+          if (typeof (w) == "undefined") {
+            w = new Worker("demo1.js");//由于此demo1.js是本地文件，而不是来源于网路，所以报错。
+          }
+          w.onmessage = function (event) {
+            document.getElementById("result").innerHTML = event.data;
+          };
+        } else {
+          document.getElementById("result").innerHTML = "抱歉，你的浏览器不支持 Web Workers...";
+        }
+      }
+
+      function stopWorker() {
+        w.terminate();
+        w = undefined;
+      }
+    </script>
+
+  </body>
+</body>
+
+</html>
